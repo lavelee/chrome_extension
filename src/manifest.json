@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "action": {
 		"default_title": "rainbow project",
-		"default_popup": "popup.html"
+		"default_popup": "popup/popup.html"
   },
   "background": {
     "service_worker": "background.js"

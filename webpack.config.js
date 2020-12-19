@@ -7,7 +7,8 @@ const pathFromRoot = path_string => path.resolve(__dirname, path_string);
 const copyFilesTask = (function(){
   const opt = { patterns: [
     {from: pathFromRoot('src/manifest.json'), to: pathFromRoot('dist/manifest.json')},
-    {from: pathFromRoot('src/popup.html'), to: pathFromRoot('dist/popup.html')},
+    {from: pathFromRoot('src/popup/popup.html'), to: pathFromRoot('dist/popup/popup.html')},
+    {from: pathFromRoot('src/popup/popup2.html'), to: pathFromRoot('dist/popup/popup2.html')},
   ]};
   return new CopyPlugin(opt);
 })(); 
@@ -25,23 +26,12 @@ const supportSCSS = {
   ],
 };
 
-module.exports = {
-  entry: {
-    content: './src/content.js',
-    background: './src/background.js',
-    popup: './src/popup.js',
-  },
-  output: {
-    filename: '[name].js',
-    path: pathFromRoot('dist'),
-  },
-  module: { // js 파일에서 요상한 확장자 import 시 tranpiling
-    rules: [
-      supportSCSS,
-    ],
-  },
-  plugins: [ // bunding 로직과 관계없는 작업들
-    copyFilesTask, 
-    purgeDistFolderTask,
-  ],
-};
+module.exports = [{
+  entry: { content: './src/content.js', background: './src/background.js' },
+  output: { path: pathFromRoot('dist') },
+}, {
+  entry: { popup: './src/popup/popup.js' },
+  output: { path: pathFromRoot('dist/popup') },
+  module: { rules: [ supportSCSS ] }, // js 파일에서 요상한 확장자 import 시 tranpiling
+  plugins: [ copyFilesTask, purgeDistFolderTask ], // bunding 로직과 관계없는 작업들. 마지막 webpack 작업에서 수행하자.
+}];

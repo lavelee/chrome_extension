@@ -5,4 +5,5 @@ console.log('popup script executed');
 document.querySelector('.test').addEventListener('click', testRequest);
 function testRequest() {    
   console.log("popup: executing button click...");
+  document.location.href = 'popup2.html';
 } 
